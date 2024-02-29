@@ -116,14 +116,14 @@ def birthdays(args, book: AddressBook):
 
 def save_data(book, filename="addressbook.pkl"):
     with open(filename, "wb") as f:
-        pickle.dump(book, f)
+        pickle.dump(book, f)  #Збереження даних у файл. Якщо ім'я файлу не вказано, використовується значення за замовчуванням
 
 def load_data(filename="addressbook.pkl"):
     try:
         with open(filename, "rb") as f:
             return pickle.load(f)
     except FileNotFoundError:
-        return AddressBook()
+        return AddressBook() #Завантаження даних з файлу. Якщо файл не знайдено, повертається порожній об'єкт
 
 def main():
     """Основна функція програми."""
