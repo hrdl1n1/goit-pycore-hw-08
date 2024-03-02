@@ -1,4 +1,4 @@
-from classes import AddressBook, Record
+from classes import AddressBook, Record, load_data, save_data
 from datetime import datetime
 
 def input_error(func):
