@@ -4,10 +4,18 @@ from collections import UserDict
 
 class Field:
     def __init__(self, value):
-        self.value = value
+        self._value = value
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, new_value):
+        self._value = new_value
 
     def __str__(self):
-        return str(self.value)
+        return str(self._value)
 
 class Name(Field):
     pass
@@ -23,9 +31,17 @@ class Phone(Field):
 
 class Birthday(Field):
     def __init__(self, value):
-        if not self._validate_date(value):
-            raise ValueError("Невірний формат дати. Використовуйте ДД.ММ.РРРР")
         super().__init__(value)
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, new_value):
+        if not self._validate_date(new_value):
+            raise ValueError("Невірний формат дати. Використовуйте ДД.ММ.РРРР")
+        self._value = new_value
 
     def _validate_date(self, value):
         try:
@@ -35,7 +51,7 @@ class Birthday(Field):
             return False
 
     def get_date_object(self):
-        return datetime.strptime(self.value, "%d.%m.%Y").date()
+        return datetime.strptime(self._value, "%d.%m.%Y").date()
 
 class Record:
     def __init__(self, name):
@@ -67,7 +83,9 @@ class Record:
         self.birthday = Birthday(birthday)
 
     def __str__(self):
-        return f"Ім'я контакту: {str(self.name)}, телефони: {'; '.join(str(p) for p in self.phones)}, дата народження: {self.birthday}"
+        phones = ', '.join(str(phone) for phone in self.phones)
+        birthday = str(self.birthday) if self.birthday else "Немає інформації про день народження"
+        return f"Ім'я: {self.name}, Телефони: {phones}, День народження: {birthday}"
 
 class AddressBook(UserDict):
     def add_record(self, record):

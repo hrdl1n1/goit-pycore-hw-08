@@ -67,7 +67,8 @@ def phone(user_input, book: AddressBook):
 def all_contacts(user_input, book: AddressBook):
     """Повертає всі контакти."""
     if book.data:
-        return book.data  # Зміна тут
+        contacts_info = "\n".join(str(record) for record in book.data.values())
+        return contacts_info
     else:
         return "Немає контактів у книзі."
 
